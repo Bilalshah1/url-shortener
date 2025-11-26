@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Shortener</title>
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: linear-gradient(135deg, #0072ff, #00c6ff);
+      color: #333;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      color: white;
+      margin-top: 40px;
+      font-size: 2.5rem;
+      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    .container {
+      background: white;
+      margin-top: 30px;
+      padding: 30px;
+      border-radius: 16px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 25px;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    input[type="text"] {
+      padding: 10px 15px;
+      width: 70%;
+      border: 2px solid #00c6ff;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #0072ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #005ce6;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    li {
+      background: #f9f9f9;
+      margin: 10px 0;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    li:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .short-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 5px;
+    }
+
+    .copy-btn {
+      background: #00c6ff;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      color: white;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: background 0.3s;
+    }
+
+    .copy-btn:hover {
+      background: #009edc;
+    }
+
+    .no-urls {
+      color: #666;
+      font-style: italic;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Welcome to URL Shortener</h1>
+
+  <div class="container">
+    <form action="/url/shorten" method="POST">
+      <input type="text" name="url" placeholder="Enter your URL here..." required />
+      <button type="submit">Shorten</button>
+    </form>
+
+    <% if (urls && urls.length > 0) { %>
+      <ul>
+        <% urls.forEach(url => { %>
+          <li>
+            <strong>Short ID:</strong> <%= url.shortId %> <br />
+            <div class="short-link">
+              <span><strong>Redirect URL:</strong> <a href="<%= url.redirectUrl %>" target="_blank"><%= url.redirectUrl %></a></span>
+              <button class="copy-btn" onclick="copyToClipboard('<%= url.redirectUrl %>')">Copy</button>
+            </div>
+          </li>
+        <% }) %>
+      </ul>
+    <% } else { %>
+      <p class="no-urls">No URLs shortened yet. Try adding one above!</p>
+    <% } %>
+  </div>
+
+  <script>
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        alert("Copied to clipboard!");
+      });
+    }
+  </script>
+</body>
+</html>
